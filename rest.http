@@ -1,0 +1,101 @@
+@rootAPI= http://localhost:8000/api/v1/users
+@productAPI= http://localhost:8000/api/v1/products
+@categoryAPI= http://localhost:8000/api/v1/categories
+
+
+
+###users
+POST {{rootAPI}}/seller
+Content-Type: application/json
+
+{
+    "fname": "sathish",
+    "lname": "boga",
+    "email": "sathish@gmail.com",
+    "phone": "123456",
+    "password": "1234"
+}
+
+###post signin user
+###
+POST {{rootAPI}}/signin
+Content-Type: application/json
+
+{
+    "email": "sathish@gmail.com",
+    "password": "1234"
+
+}
+
+### get user profile using accessJWT token
+###
+GET {{rootAPI}}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3MjM2ODY2NTIsImV4cCI6MTcyMzY4NzU1Mn0.gjKUD1RzhGU4z_P5HPaS5NuH8iyxbSEtDx0XAlxwbBQ
+
+### get new accessJWT
+###
+GET {{rootAPI}}/get-accessjwt
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3MjM3MTUxNzIsImV4cCI6MTcyNjMwNzE3Mn0.t-LoJGaWLDwwgHeQpDPm0wg2lxbXyA3hTrYiTtK4tr4
+
+### post new product
+###
+POST {{productAPI}}
+Content-Type: application/json
+
+{
+    "sellername":"darshith",
+    "UUID":"1245",
+    "type":"mobile",
+    "thumbnail":"https://m.media-amazon.com/images/I/71r0qW8YZtL._AC_UL320_.jpg",
+    "category":"electronics",
+    "brand":"apple",
+    "name": "iphone-15pro",
+    "quantity":"15",
+    "price":"1500$",
+    "onsale":"true",
+    "discount":"true",
+    "trending":"true"   
+}
+
+###otp-request
+###
+POST {{rootAPI}}/request-opt
+Content-Type: application/json
+
+{
+    "email": "darshi@gmail.com"
+}
+
+### change-password
+###
+PATCH {{rootAPI}}/password
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3MjQ4MTkzOTUsImV4cCI6MTcyNDgyMDI5NX0.zcSYoEJ_W6zvzmRoeOOkfv2z3gxGdBgNjM6jeBOj7lg
+Content-Type: application/json
+
+{
+
+    "oldPassword": "111",
+      "newPassword": "123"
+    
+
+}
+
+
+###categories
+
+###
+POST {{categoryAPI}}
+Content-Type: application/json
+
+{
+    "title": "Moniters"
+}
+
+### get categories
+GET {{categoryAPI}}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3MjQ4MjY2MTIsImV4cCI6MTcyNDgyNzUxMn0.cQwyYnNMvDiPlNIZwLsH9ndop_H0ECZ4hiXxSg1K6pA
+
+
+### get a product
+GET {{productAPI}}/66d194fe0a0c8410a6beea91
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3MjUyNTMxNTAsImV4cCI6MTcyNTI1NDA1MH0.JkXiQYinVe6_POckZw3p1fMHtcXDK66BKGtCukj1nL4
