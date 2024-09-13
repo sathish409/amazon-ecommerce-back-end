@@ -41,11 +41,11 @@ const productSchema= new mongoose.Schema({
 default:"",
    },
    quantity:{
-    type: String,
+    type: Number,
     required:true,
    },
    price:{
-    type: String,
+    type: Number,
     required:true,
    },
 
@@ -54,8 +54,8 @@ default:"",
     default:null,
    },
    discount:{
-    type: Boolean,
-    default:null,
+    type: Number,
+    default:"",
    },
    trending:{
     type: Boolean,
