@@ -14,6 +14,9 @@ export  const getUserByemail=(email)=>{
 export  const getOneUser=(filter)=>{
     return  userSchema.findOne(filter)
 }
+export  const getUserById=(filter)=>{
+    return  userSchema.findById(filter)
+}
 
 export  const getUserPasswordById=(_id)=>{
     return  userSchema.findOne(_id, {password: 1})

@@ -1,6 +1,10 @@
 @rootAPI= http://localhost:8000/api/v1/users
 @productAPI= http://localhost:8000/api/v1/products
 @categoryAPI= http://localhost:8000/api/v1/categories
+@paymentAPI= http://localhost:8000/api/v1/payments
+
+
+
 
 
 
@@ -99,3 +103,39 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFp
 ### get a product
 GET {{productAPI}}/66d194fe0a0c8410a6beea91
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3MjUyNTMxNTAsImV4cCI6MTcyNTI1NDA1MH0.JkXiQYinVe6_POckZw3p1fMHtcXDK66BKGtCukj1nL4
+
+
+###
+POST {{paymentAPI}}
+Content-Type: application/json
+
+{
+    "total":"subtotal",
+    "currency":"aud",
+    "paymentMethodType":"card"
+}
+
+###
+GET {{productAPI}}/search-products/test
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhcnNoaUBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5MjE1MjYsImV4cCI6MTcyNzkyMjQyNn0.X_kTvuAKrL9PP79CaSVATqwAx2iIqp3m7EevVhfctns
+
+
+
+###
+POST {{paymentAPI}}/create-payment-intent
+Content-Type: application/json
+
+{
+            "total":256,
+        "currency":"aud",
+        "paymentMethodType":"card"
+}
+
+
+###
+POST {{productAPI}}/reduce-quantity
+Content-Type: application/json
+
+{
+    "qty":"2"
+}

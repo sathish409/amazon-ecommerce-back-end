@@ -7,12 +7,16 @@ export  const createProduct=(obj)=>{
 
 
 
-export  const getProducts=()=>{
-    return  ProductSchema.find()
+export  const getProducts=(filter)=>{
+    return  ProductSchema.find(filter)
 }
 
 export  const getAProduct=({_id})=>{
     return  ProductSchema.findOne({_id})
+}
+
+export  const findAProduct=(_id)=>{
+    return  ProductSchema.findById(_id)
 }
 
 

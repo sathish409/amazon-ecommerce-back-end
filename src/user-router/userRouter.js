@@ -26,6 +26,18 @@ router.get("/", userAuth, (req, res, next)=>{
         next(error)
     }
 })
+router.post("/address", userAuth, async(req, res ,next)=>{
+    const user = req.body
+console.log(user)
+    const updateAddress = await updateUser(user)
+    if(updateAddress?._id){
+        res.json({
+            status:"success",
+            message:"user address has been updated successfully",
+            updateAddress,
+        })
+    }
+})
 
 
 router.get("/get-accessjwt", refreshAuth)
@@ -298,6 +310,13 @@ router.patch("/password", userAuth, async(req, res, next)=>{
    
 
   
+})
+
+
+router.get("/order-history", userAuth, async(req, res, next)=>{
+    console.log(req.body)
+    const {_id} = req.body
+    const response = await getOrderHistoryById(_id)
 })
 
 

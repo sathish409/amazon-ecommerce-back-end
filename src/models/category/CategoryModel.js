@@ -11,5 +11,11 @@ export  const getCategories=()=>{
 }
 
 
+export  const getQuaryCategories=(filter)=>{
+    return  CategorySchema.find(filter)
+}
+
+
+
 
 

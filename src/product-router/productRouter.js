@@ -1,8 +1,11 @@
 import express from 'express'
 
-import { createProduct, getAProduct, getProducts } from '../models/product/ProductModel.js'
+import { createProduct, findAProduct, getAProduct, getProducts } from '../models/product/ProductModel.js'
 import slugify from 'slugify'
 import { userAuth } from '../middleware/authMiddleware.js'
+import { getQuaryCategories } from '../models/category/CategoryModel.js'
+
+import { getOneUser } from '../models/users/UserModel.js'
 
 
 
@@ -82,4 +85,83 @@ router.get("/:_id?", async (req, res, next)=>{
     }
     })
 
+router.get("/search-products/:query", async (req, res, next)=>{
+    try {
+        
+        const {query} = req.params;
+    console.log(query)
+    ///get category list using query
+  const categoryList = await  getQuaryCategories({slug:{ $regex: query, $options: 'i' }})
+console.log(categoryList)
+
+    // if catid exist using parent catid get all products
+   
+    if(categoryList.length > 0){
+        const categoryIds = categoryList.map(category => category._id);
+        const list = await getProducts({parentCatId:{$in:categoryIds}})
+        res.json({
+            status:"success",
+             message: "here are the searched products",
+          list,
+         
+        })
+       
+        
+        console.log(list)
+    }
+
+  
+  
+    } catch (error) {
+       next(error) 
+    }
+    
+    })
+
+router.post("/reduce-quantity", async(req,res, next)=>{
+console.log(req.body)
+const {cartList, _id} = req.body
+
+try {
+    const userExist = await getOneUser({_id})
+    if(!userExist){
+        return res.json({
+            message:"user not found"
+        })
+    }
+    const purchaseHistory = await Promise.all(cartList.map(async(product)=>{
+        const {_id,productquantity  } = product
+        const existingProduct = await findAProduct(_id)
+        console.log(existingProduct)
+      if(!existingProduct){
+        throw new error(`Product with ID ${_id} not found`)
+      }
+      if(existingProduct.quantity < productquantity){
+        throw new error(`Insufficient stock for ${existingProduct.productname} not found`)
+      }
+      //reduce quantity
+  
+      existingProduct.quantity -= productquantity;
+      await existingProduct.save()
+      return {
+        productId :existingProduct._id,
+        quantity:productquantity,
+        purchaseDate: new Date(),
+      }
+   
+    }))
+    userExist.purchaseHistory.push(...purchaseHistory)
+    await userExist.save()
+  
+res.json({
+    status:"success",
+    message:"Purchase completed successfully",
+    ...purchaseHistory,
+})
+} catch (error) {
+    res.json({
+        message:"Error during purchase", error:error.message
+    })
+}
+})
 export default router;

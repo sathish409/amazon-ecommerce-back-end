@@ -3,6 +3,7 @@ import express from 'express';
 import "dotenv/config"
 import cors from 'cors'
 import morgan from 'morgan'
+import payementRouter from './src/payment-router/payementRouter.js'
 import userRouter from './src/user-router/userRouter.js'
 import productRouter from './src/product-router/productRouter.js'
 import categoriesRouter from './src/categories-router/categoriesRouter.js'
@@ -26,6 +27,8 @@ app.use("/api/v1/users", userRouter)
 app.use("/api/v1/products", productRouter)
 app.use("/api/v1/categories", categoriesRouter
 )
+app.use("/api/v1/payments", payementRouter)
+
 
 
 

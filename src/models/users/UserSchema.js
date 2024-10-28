@@ -28,6 +28,7 @@ const userSchema= new mongoose.Schema({
     type: String,
     required:true,
    },
+
    password:{
     type: String,
     required:true,
@@ -36,6 +37,23 @@ const userSchema= new mongoose.Schema({
     type: String,
     default:"",
    },
+   purchaseHistory: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId, // References the Product schema
+        ref: 'Product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      purchaseDate: {
+        type: Date,
+        default: Date.now, // Automatically adds the current date when purchase is made
+      }
+    }
+  ]
 
 },
 {
