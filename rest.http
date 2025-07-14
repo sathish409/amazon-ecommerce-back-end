@@ -48,17 +48,20 @@ Content-Type: application/json
 
 {
     "sellername":"darshith",
-    "UUID":"1245",
+    "sku":"1245",
     "type":"mobile",
     "thumbnail":"https://m.media-amazon.com/images/I/71r0qW8YZtL._AC_UL320_.jpg",
     "category":"electronics",
     "brand":"apple",
-    "name": "iphone-15pro",
+    "productname": "iphone-15pro",
     "quantity":"15",
-    "price":"1500$",
+    "price":"1500",
     "onsale":"true",
-    "discount":"true",
-    "trending":"true"   
+    "discount":"10",
+    "trending":"true" ,
+    "description":"hi iphone",
+    "producttype":"iphone"
+
 }
 
 ###otp-request
@@ -92,7 +95,7 @@ POST {{categoryAPI}}
 Content-Type: application/json
 
 {
-    "title": "Moniters"
+    "title": "laptops"
 }
 
 ### get categories

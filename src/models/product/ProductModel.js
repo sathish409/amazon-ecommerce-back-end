@@ -16,7 +16,7 @@ export  const getAProduct=({_id})=>{
 }
 
 export  const findAProduct=(_id)=>{
-    return  ProductSchema.findById(_id)
+    return  ProductSchema.findOne({_id})
 }
 
 

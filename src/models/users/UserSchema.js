@@ -39,6 +39,10 @@ const userSchema= new mongoose.Schema({
    },
    purchaseHistory: [
     {
+      productName:{
+        type: String,
+        required: true,
+      },
       productId: {
         type: mongoose.Schema.Types.ObjectId, // References the Product schema
         ref: 'Product',
