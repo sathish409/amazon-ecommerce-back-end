@@ -8,8 +8,8 @@ export const createReview =(reviewObj)=>{
 
 
 
-export const getReview =(filter)=>{
-    return reviewSchema.findOne(filter)
+export const getAllReviews =(filter)=>{
+    return reviewSchema.find(filter)
 }
 
 export const deleteReview =(filter)=>{

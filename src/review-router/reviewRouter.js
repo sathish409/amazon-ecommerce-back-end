@@ -1,66 +1,62 @@
 import express from "express";
 
-import {
-  createProduct,
-  findAProduct,
-  getAProduct,
-  getProducts,
-} from "../models/product/ProductModel.js";
-import slugify from "slugify";
-import { userAuth } from "../middleware/authMiddleware.js";
-import { getQuaryCategories } from "../models/category/CategoryModel.js";
 
-import { getOneUser } from "../models/users/UserModel.js";
+import { userAuth } from "../middleware/authMiddleware.js";
 import { newReviewValidation } from "../middleware/joiValidation.js";
-import { createReview } from "../models/review/reviewModal.js";
+import { createReview, getAllReviews } from "../models/review/reviewModal.js";
+import { updateProduct } from "../models/product/ProductModel.js";
 
 const router = express.Router();
 
-router.post("/", userAuth, newReviewValidation, async (req, res, next) => {
+router.post("/", userAuth, async (req, res, next) => {
   try {
-     const userId = req.userInfo._id;
-    const result = await createReview(...req.body, userId);
-    console.log(req.body);
+    console.log("after userAuth:", req.userInfo);
+console.log(req.body)
+          const user = req.userInfo;
+          console.log("userAuth set userInfo:", req.userInfo);
+      if (!user?._id) {
+        return res.status(401).json({
+          status: "error",
+          message: "Unauthorised request",
+        });
+      }
+        
+    const result = await createReview({ ...req.body, userId: user._id });
+ 
+     console.log("after userAuth:", req.userInfo);
 
-    if (product?._id) {
+    if (result?._id) {
+       await updateProduct({_id:req.body.productId}, {reviewGiven:result._id})
       return res.json({
         status: "success",
-        message: "Product has been created successfully",
+        message: "Review has been submitted",
       });
     }
     res.json({
       status: "error",
-      message: "Unable to create product",
+      message: "Unable to submit a review",
     });
 
     console.log(error.message);
   } catch (error) {
-    if (
-      error.message.includes(
-        "E11000 duplicate key error collection: amazon.products index: sku_1 dup key"
-      )
-    ) {
-      error.message = "Product with same sku already exist";
-      error.errorCode = 200;
-    }
+   
     next(error);
   }
 });
 
-// router.get("/:_id?", async (req, res, next) => {
-//   try {
-//     const { _id } = req.params;
+router.get("/", async (req, res, next) => {
+  try {
 
-//     const products = _id ? await getAProduct({ _id }) : await getProducts();
-//     res.json({
-//       status: "success",
-//       message: "Here are the products",
-//       products,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    const reviews = await getAllReviews() 
+    res.json({
+      status: "success",
+      message: "Here are the reviews",
+      reviews,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 // router.get("/search-products/:query", async (req, res, next) => {
 //   try {

@@ -7,6 +7,7 @@ import payementRouter from './src/payment-router/payementRouter.js'
 import userRouter from './src/user-router/userRouter.js'
 import productRouter from './src/product-router/productRouter.js'
 import categoriesRouter from './src/categories-router/categoriesRouter.js'
+import reviewRouter from './src/review-router/reviewRouter.js'
 //mongodb connect
 import {connectDb} from './src/config/mongoDb.js'
 
@@ -25,9 +26,10 @@ app.use(morgan("dev"))
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/products", productRouter)
-app.use("/api/v1/categories", categoriesRouter
-)
+app.use("/api/v1/categories", categoriesRouter)
 app.use("/api/v1/payments", payementRouter)
+app.use("/api/v1/user-reviews", reviewRouter)
+
 
 
 

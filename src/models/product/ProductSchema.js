@@ -69,7 +69,12 @@ required:true,
 lastdate:{
   type:Date,
   default:"",
-}
+},
+reviewGiven:{
+type:mongoose.Types.ObjectId,
+default:null,
+},
+
 },
 {
     timestamps:true,

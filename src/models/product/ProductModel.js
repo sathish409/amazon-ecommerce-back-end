@@ -21,3 +21,9 @@ export  const findAProduct=(_id)=>{
 
 
 
+export  const updateProduct=(filter, update)=>{
+    return  ProductSchema.findOneAndUpdate(filter, update)
+}
+
+
+
