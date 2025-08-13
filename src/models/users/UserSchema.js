@@ -55,7 +55,11 @@ const userSchema= new mongoose.Schema({
       purchaseDate: {
         type: Date,
         default: Date.now, // Automatically adds the current date when purchase is made
-      }
+      },
+      reviewSubmitted:{
+      type:mongoose.Schema.Types.ObjectId,
+      default:null,
+      },
     }
   ]
 

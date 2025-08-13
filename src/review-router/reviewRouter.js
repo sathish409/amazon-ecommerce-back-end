@@ -3,15 +3,17 @@ import express from "express";
 
 import { userAuth } from "../middleware/authMiddleware.js";
 import { newReviewValidation } from "../middleware/joiValidation.js";
-import { createReview, getAllReviews } from "../models/review/reviewModal.js";
+import { createReview, deleteReviewById, getAllReviews, updateReview } from "../models/review/reviewModal.js";
 import { updateProduct } from "../models/product/ProductModel.js";
+import { updateUser } from "../models/users/UserModel.js";
 
 const router = express.Router();
 
 router.post("/", userAuth, async (req, res, next) => {
   try {
-    console.log("after userAuth:", req.userInfo);
+   
 console.log(req.body)
+
           const user = req.userInfo;
           console.log("userAuth set userInfo:", req.userInfo);
       if (!user?._id) {
@@ -23,15 +25,17 @@ console.log(req.body)
         
     const result = await createReview({ ...req.body, userId: user._id });
  
-     console.log("after userAuth:", req.userInfo);
+
 
     if (result?._id) {
        await updateProduct({_id:req.body.productId}, {reviewGiven:result._id})
+      await updateUser({_id: user._id,"purchaseHistory._id":req.body.purchaseId}, {$set:{"purchaseHistory.$.reviewSubmitted":result._id}})
       return res.json({
         status: "success",
         message: "Review has been submitted",
       });
     }
+  
     res.json({
       status: "error",
       message: "Unable to submit a review",
@@ -58,33 +62,53 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// router.get("/search-products/:query", async (req, res, next) => {
-//   try {
-//     const { query } = req.params;
-//     console.log(query);
-//     ///get category list using query
-//     const categoryList = await getQuaryCategories({
-//       slug: { $regex: query, $options: "i" },
-//     });
-//     console.log(categoryList);
-
-//     // if catid exist using parent catid get all products
-
-//     if (categoryList.length > 0) {
-//       const categoryIds = categoryList.map((category) => category._id);
-//       const list = await getProducts({ parentCatId: { $in: categoryIds } });
-//       res.json({
-//         status: "success",
-//         message: "here are the searched products",
-//         list,
-//       });
-
-//       console.log(list);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+router.patch("/:_id", userAuth, async (req, res, next) => {
+  try {
+    const { _id } = req.params;
+    const {status} = req.body;
+    console.log(_id , status)
+    if(["active", "inactive"].includes(status)){
+ const result = await updateReview({_id}, {status})
+    if (result?._id) {
+     
+      res.json({
+        status: "success",
+        message: "The review has been updated",
+       
+      });
+    }
+ }
+    res.json({
+        status: "error",
+        message: "Something went wrong please contact administrator",
+       
+      });
+  } catch (error) {
+    next(error);
+  }
+});
+router.delete("/:_id", userAuth, async (req, res, next) => {
+  try {
+    const { _id } = req.params;
+    console.log(_id)
+     const result = await deleteReviewById({_id})
+    if (result?._id) {
+     
+      res.json({
+        status: "success",
+        message: "The review has been deleted",
+       
+      });
+ }
+    res.json({
+        status: "error",
+        message: "Something went wrong please contact administrator",
+       
+      });
+  } catch (error) {
+    next(error);
+  }
+});
 
 // router.post("/reduce-quantity", async (req, res, next) => {
 //   console.log(req.body);
