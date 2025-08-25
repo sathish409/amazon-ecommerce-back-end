@@ -11,23 +11,43 @@ import { userAuth } from "../middleware/authMiddleware.js";
 import { getQuaryCategories } from "../models/category/CategoryModel.js";
 
 import { getOneUser } from "../models/users/UserModel.js";
-
+import multer from "multer";
 const router = express.Router();
-
-router.post("/", async (req, res, next) => {
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // make sure "uploads" folder exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
+router.post("/", upload.array("images", 10), async (req, res, next) => {
   try {
+     console.log(req.body)
     const { productname, ...rest } = req.body;
+
+        if (!productname) {
+      return res.status(400).json({
+        status: "error",
+        message: "Product name is required",
+      });
+    }
+      // user uploaded files
+  
     const obj = {
       productname,
-
+      images: req.files?.map(file => `/uploads/${file.filename}`),
       ...rest,
       slug: slugify(productname, {
         lower: true,
         trim: true,
       }),
     };
-    const product = await createProduct(obj);
-    console.log(req.body);
+    const product = await createProduct(
+     obj
+    );
+    console.log(obj);
 
     if (product?._id) {
       return res.json({

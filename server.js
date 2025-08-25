@@ -10,7 +10,7 @@ import categoriesRouter from './src/categories-router/categoriesRouter.js'
 import reviewRouter from './src/review-router/reviewRouter.js'
 //mongodb connect
 import {connectDb} from './src/config/mongoDb.js'
-
+import path from "path";
 connectDb()
 
 const app = express()
@@ -31,7 +31,7 @@ app.use("/api/v1/payments", payementRouter)
 app.use("/api/v1/user-reviews", reviewRouter)
 
 
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
 app.get("/", (req, res)=>{
