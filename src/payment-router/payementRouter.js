@@ -18,7 +18,9 @@ try {
     const paymentIntent = await stripe.paymentIntents.create({
         amount: total * 100,
         currency,
-        payment_method_types:[paymentMethodType]
+        payment_method_types:[paymentMethodType],
+     
+      
     })
     console.log(paymentIntent)
     //return secret key

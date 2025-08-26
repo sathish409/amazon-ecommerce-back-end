@@ -24,29 +24,27 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 router.post("/", upload.array("images", 10), async (req, res, next) => {
   try {
-     console.log(req.body)
+    console.log(req.body);
     const { productname, ...rest } = req.body;
 
-        if (!productname) {
+    if (!productname) {
       return res.status(400).json({
         status: "error",
         message: "Product name is required",
       });
     }
-      // user uploaded files
-  
+    // user uploaded files
+
     const obj = {
       productname,
-      images: req.files?.map(file => `/uploads/${file.filename}`),
+      images: req.files?.map((file) => `/uploads/${file.filename}`),
       ...rest,
       slug: slugify(productname, {
         lower: true,
         trim: true,
       }),
     };
-    const product = await createProduct(
-     obj
-    );
+    const product = await createProduct(obj);
     console.log(obj);
 
     if (product?._id) {
@@ -147,6 +145,7 @@ router.post("/reduce-quantity", async (req, res, next) => {
         existingProduct.quantity -= productquantity;
         await existingProduct.save();
         return {
+          status: "success",
           productName: existingProduct.productname,
           productId: existingProduct._id,
           quantity: productquantity,
@@ -157,7 +156,7 @@ router.post("/reduce-quantity", async (req, res, next) => {
     userExist.purchaseHistory.push(...purchaseHistory);
     await userExist.save();
 
-    res.json({
+   return res.json({
       status: "success",
       message: "Purchase completed successfully",
       ...purchaseHistory,
