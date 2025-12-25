@@ -24,6 +24,7 @@ app.use(cors())
 app.use(morgan("dev"))
 
 
+
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/products", productRouter)
 app.use("/api/v1/categories", categoriesRouter)

@@ -87,6 +87,51 @@ router.post("/seller", newUserValidation, async(req, res, next)=>{
         next(error)
     }
 })
+router.post("/buyer", newUserValidation, async(req, res, next)=>{
+    try {
+  req.body.password = hashPassword(req.body.password);
+   req.body.role= "buyer"
+        const user = await createUser(req.body);
+        console.log(req.body)
+        //if user is created , create unique url and emai that to user
+
+        if(user?._id){
+        const c= uuidv4()
+
+        const token = await createSession({token:c, associate:user.email})
+        if(token?._id){
+       const url= `${process.env.CLIENT_ROOT_DOMAIN}/verify-email?e=${user.email}&c=${c}`
+       sendEmailVerificationLinkEmail({
+        email:user.email, 
+        url, 
+        fname:user.fname})
+        }
+ 
+        }
+
+        if(user?._id){
+          return res.json({
+                status: "success",
+                message:"user has been created successfully",
+            })
+        
+        }
+        res.json({
+            status: "error",
+            message:"Unable to create user",
+        })
+
+       console.log(error.message) 
+     
+
+    } catch (error) {
+        if(error.message.includes("E11000 duplicate key error collection")){
+            error.message="The user with the same email already exist, please use another email"
+            error.errorCode= 200
+        }
+        next(error)
+    }
+})
 router.post("/signin", userSignInValidation, async(req, res, next)=>{
     try {
 
