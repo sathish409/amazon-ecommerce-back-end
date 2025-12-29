@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-export const connectDb = async() => {
+export const connectDb = async () => {
   try {
-     const con = await mongoose.connect(process.env.MONGO_URL, {
+    const con = await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    con && console.log("db connected");
+    con && console.log("db is connected");
   } catch (error) {
     console.log(error);
   }
