@@ -25,6 +25,7 @@ app.use(
       "https://amazon-ecommerce-front-end.vercel.app", // ✅ ADD THIS
       "https://amazon-ecommerce-front-1vodwj89p-sathish409s-projects.vercel.app",
       "https://amazon-ecommerce-front-o4cids393-sathish409s-projects.vercel.app",
+       "https://amazon-ecommerce-front-end-git-main-sathish409s-projects.vercel.app"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

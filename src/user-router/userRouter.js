@@ -144,7 +144,7 @@ router.post("/signin", userSignInValidation, async(req, res, next)=>{
 
     
 
-        const isMatched = comparePassword(password, user.password)
+        const isMatched = await comparePassword(password, user.password)
 
         if(isMatched){
                 //jwts 
