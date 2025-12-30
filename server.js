@@ -18,13 +18,18 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
+
+
 app.use(
   cors({
-    origin:
-      "https://amazon-ecommerce-front-1vodwj89p-sathish409s-projects.vercel.app/",
+    origin: [
+      "https://amazon-ecommerce-front-1vodwj89p-sathish409s-projects.vercel.app",
+      "https://amazon-ecommerce-front-o4cids393-sathish409s-projects.vercel.app",
+    ],
     credentials: true,
   })
 );
+
 app.use(morgan("dev"));
 
 app.use("/api/v1/users", userRouter);
