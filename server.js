@@ -19,16 +19,19 @@ const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 
-
 app.use(
   cors({
     origin: [
+      "https://amazon-ecommerce-front-end.vercel.app", // ✅ ADD THIS
       "https://amazon-ecommerce-front-1vodwj89p-sathish409s-projects.vercel.app",
       "https://amazon-ecommerce-front-o4cids393-sathish409s-projects.vercel.app",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+app.options("*", cors());
 
 app.use(morgan("dev"));
 
