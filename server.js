@@ -16,17 +16,17 @@ connectDb();
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use(express.json());
 
 app.use(cors());
 
 app.use(morgan("dev"));
-
+``
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/categories", categoriesRouter);
-app.use("/api/v1/payments", payementRouter);
+app.use("/api/v1/payments", payementRouter);``
 app.use("/api/v1/user-reviews", reviewRouter);
 
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
